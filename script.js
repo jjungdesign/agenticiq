@@ -313,6 +313,9 @@ class ProgressManager {
                 <p class="completion-message">
                     Jasper has completed setting up your Brand Voice, Audiences, and Knowledge Base using your company profile and brand materials.
                 </p>
+                <p class="review-prompt">
+                    Next, review each IQ to see how Jasper tailored them to your brand. You can refine or customize any of these at any time.
+                </p>
             `;
             this.progressSteps.appendChild(messageDiv);
             

@@ -401,6 +401,14 @@ body {
     font-size: 14px;
     line-height: 1.4;
     color: #1a1a1a;
+    margin: 0 0 12px 0;
+    font-weight: 400;
+}
+
+.review-prompt {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #1a1a1a;
     margin: 0;
     font-weight: 400;
 }
