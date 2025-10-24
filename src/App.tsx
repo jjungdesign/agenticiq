@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import WelcomeScreen from './components/WelcomeScreen';
+import PricingScreen from './components/PricingScreen';
 import './App.css';
 
 const App: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState<'chat' | 'loading' | 'complete'>('chat');
+  const [currentStep, setCurrentStep] = useState<'chat' | 'loading' | 'complete' | 'pricing'>('chat');
   const [isFirstTime, setIsFirstTime] = useState(true);
 
   useEffect(() => {
@@ -35,16 +36,23 @@ const App: React.FC = () => {
         <div className="dashboard">
           <h1>Welcome back to Jasper!</h1>
           <p>Your workspace is ready to go.</p>
-          <button 
-            className="primary-button" 
-            onClick={() => {
-              localStorage.removeItem('jasper-first-login');
-              window.location.reload();
-            }}
-            style={{ marginTop: '20px' }}
-          >
-            Reset Setup (Demo)
-          </button>
+          <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+            <button 
+              className="primary-button" 
+              onClick={() => {
+                localStorage.removeItem('jasper-first-login');
+                window.location.reload();
+              }}
+            >
+              Reset Setup (Demo)
+            </button>
+            <button 
+              className="primary-button" 
+              onClick={() => setCurrentStep('pricing')}
+            >
+              View Pricing
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -73,10 +81,26 @@ const App: React.FC = () => {
               <div className="success-icon">✅</div>
               <h1>Setup Complete!</h1>
               <p>Your Jasper workspace has been configured with intelligent IQs based on your company information.</p>
-              <button className="primary-button" onClick={() => window.location.reload()}>
-                Continue to Dashboard
-              </button>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button className="primary-button" onClick={() => window.location.reload()}>
+                  Continue to Dashboard
+                </button>
+                <button className="primary-button" onClick={() => setCurrentStep('pricing')}>
+                  View Pricing
+                </button>
+              </div>
             </div>
+          </motion.div>
+        )}
+
+        {currentStep === 'pricing' && (
+          <motion.div
+            key="pricing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <PricingScreen />
           </motion.div>
         )}
       </AnimatePresence>

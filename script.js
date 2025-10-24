@@ -1,6 +1,15 @@
-// Close button functionality
-    const closeBtn = document.querySelector('.close-btn');
+// Landing page button
+const startIqBtn = document.getElementById('startIqBtn');
+const landingPage = document.getElementById('landingPage');
 const modalOverlay = document.querySelector('.modal-overlay');
+
+startIqBtn.addEventListener('click', () => {
+    landingPage.classList.add('hidden');
+    modalOverlay.style.display = 'flex';
+});
+
+// Close button functionality
+const closeBtn = document.querySelector('.close-btn');
 
     closeBtn.addEventListener('click', () => {
     modalOverlay.style.display = 'none';
@@ -29,6 +38,7 @@ class ProgressManager {
         this.canvas = document.querySelector('.canvas');
         this.progressSteps = document.querySelector('.progress-steps');
         this.currentAssetGenerating = false;
+        this.assetCards = []; // Store references to created assets
         
         this.stepConfigs = [
             {
@@ -327,12 +337,194 @@ class ProgressManager {
             `;
             document.querySelector('.left-section').appendChild(ctaDiv);
             
+            // Add click handler for Review IQ button
+            const reviewBtn = ctaDiv.querySelector('.review-btn');
+            reviewBtn.addEventListener('click', () => {
+                this.startReviewFlow();
+            });
+            
             // Fade in (dissolve only)
             setTimeout(() => {
                 messageDiv.classList.add('visible');
                 ctaDiv.classList.add('visible');
             }, 100);
         }
+    
+    startReviewFlow() {
+        // Simply show the review screen
+        this.showReviewScreen();
+    }
+    
+    showReviewScreen() {
+        const modalContent = document.querySelector('.modal-content');
+        const modalHeader = document.querySelector('.modal-header');
+        
+        // Update header
+        modalHeader.innerHTML = '<h2>Review Jasper IQ</h2>';
+        
+        // Replace modal content with review screen
+        modalContent.innerHTML = `
+            <div class="review-container">
+                <div class="review-left-section">
+                    <h3 class="review-step-number">1. Brand Voice</h3>
+                    <div class="review-explanation">
+                        <p>We analyzed your website and messaging to generate a brand voice tailored to your company. This helps Jasper write with the tone and language your brand is known for.</p>
+                        <p>Review this Brand Voice we've created—you can edit them anytime on the Brand Voice page.</p>
+                    </div>
+                    
+                    <div class="review-info-box">
+                        <div class="info-icon">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 1C4.13 1 1 4.13 1 8s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm1 9H7V7h2v5z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="info-content">
+                            <strong>Why is Brand Voice important?</strong>
+                            <ul>
+                                <li>Stay consistent across all your content—no more guesswork or off-brand copy.</li>
+                                <li>Save time by letting Jasper write in your style automatically.</li>
+                                <li>Stand out with a voice that's uniquely yours, not generic AI-speak.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="review-navigation">
+                        <button class="review-back-btn">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <button class="review-next-btn">Next</button>
+                    </div>
+                </div>
+                
+                <div class="review-right-section">
+                    <div class="review-tabs">
+                        <button class="review-tab active">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <rect x="2" y="2" width="12" height="12" rx="2" fill="currentColor"/>
+                            </svg>
+                            Brand Voice
+                        </button>
+                        <button class="review-tab-preview">Preview Sample</button>
+                        <button class="review-tab-edit">Edit</button>
+                    </div>
+                    
+                    <div class="review-content-area" id="reviewContentArea">
+                        <!-- Canvas will be inserted here -->
+                        <div class="review-canvas-container"></div>
+                        <div class="brand-voice-preview" style="display: none;">
+                            <h2>Brand Voice: Whisker & Tails</h2>
+                            <div class="bv-meta">
+                                <span class="bv-label">Best used for:</span>
+                                <span class="bv-value">Blog posts</span>
+                            </div>
+                            
+                            <div class="bv-section">
+                                <h4>Description:</h4>
+                                <p>The voice is enthusiastic, inviting, and informative. It has a warm and engaging personality that seeks to connect with pet owners through shared love and care for pets. It communicates with lively and positive language, encouraging participation and connection.</p>
+                            </div>
+                            
+                            <div class="bv-section">
+                                <h4>The voice embodies values of:</h4>
+                                <div class="bv-values">
+                                    <div class="bv-value-item">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                        <div>
+                                            <strong>Positivity:</strong> Uses cheerful and uplifting language to create a joyful atmosphere
+                                        </div>
+                                    </div>
+                                    <div class="bv-value-item">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                        <div>
+                                            <strong>Engagement:</strong> Encourages interaction and participation with inclusive language
+                                        </div>
+                                    </div>
+                                    <div class="bv-value-item">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                        <div>
+                                            <strong>Clarity:</strong> Provides clear, straightforward information about products and initiatives
+                                        </div>
+                                    </div>
+                                    <div class="bv-value-item">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                        <div>
+                                            <strong>Authenticity:</strong> Communicates genuine care and passion for pets and their wellbeing
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bv-footer">
+                                <label class="bv-checkbox">
+                                    <input type="checkbox" checked>
+                                    <span>Set this as the default Brand Voice for your workspace.</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add review mode class
+        modalContent.classList.add('review-mode');
+        
+        // Wait a moment for the DOM to be ready
+        setTimeout(() => {
+            // Find the Brand Voice card (has structured content)
+            const allCards = Array.from(this.canvasViewport.querySelectorAll('.asset-card'));
+            const brandVoiceCard = allCards.find(card => 
+                card.querySelector('.structured-content') && 
+                !card.classList.contains('brand-context') && 
+                !card.classList.contains('knowledge-base')
+            );
+            
+            console.log('All cards:', allCards);
+            console.log('Brand Voice card:', brandVoiceCard);
+            
+            if (brandVoiceCard) {
+                // Clone only the Brand Voice card
+                const brandVoiceClone = brandVoiceCard.cloneNode(true);
+                
+                // Create a canvas viewport for the review
+                const reviewCanvasContainer = document.querySelector('.review-canvas-container');
+                const reviewViewport = document.createElement('div');
+                reviewViewport.className = 'canvas-viewport review-canvas-viewport';
+                
+                // Center and zoom the Brand Voice card
+                brandVoiceClone.style.position = 'absolute';
+                brandVoiceClone.style.left = '50%';
+                brandVoiceClone.style.top = '50%';
+                brandVoiceClone.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                brandVoiceClone.style.zIndex = '1';
+                
+                reviewViewport.appendChild(brandVoiceClone);
+                reviewCanvasContainer.appendChild(reviewViewport);
+            } else {
+                console.error('Brand Voice card not found');
+            }
+        }, 100);
+        
+        // Add back button handler
+        const backBtn = document.querySelector('.review-back-btn');
+        backBtn.addEventListener('click', () => {
+            this.exitReviewFlow();
+        });
+    }
+    
+    exitReviewFlow() {
+        // Reload the page to go back to initial state
+        window.location.reload();
+    }
     
     showCanvasAnimation(stepNumber, duration) {
         const config = this.stepConfigs[stepNumber - 1];
