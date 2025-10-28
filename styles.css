@@ -265,6 +265,120 @@ body {
     cursor: grab;
 }
 
+/* Flat Block Styles */
+.block-3d {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(-600px);
+    width: 280px;
+    height: 80px;
+    transition: transform 0.6s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.block-3d.dropping {
+    transform: translateX(-50%) translateY(-150px);
+}
+
+.block-3d.landed {
+    transform: translateX(-50%) translateY(-150px);
+}
+
+.block-front {
+    width: 100%;
+    height: 100%;
+    background: var(--block-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.block-label {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.unified-block {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateY(-150px);
+    width: 280px;
+    height: 320px;
+    background: #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.unified-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.6) 50%, 
+        transparent 100%
+    );
+    animation: shimmerOnce 1.2s ease-out 0.3s forwards;
+}
+
+@keyframes shimmerOnce {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.unified-content {
+    text-align: center;
+    color: #1a1a1a;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.doc-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 80%;
+}
+
+.doc-line {
+    height: 3px;
+    background: #b8b8b8;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.doc-line.short {
+    width: 60%;
+}
+
+.unified-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: 10px;
+}
+
+/* Canvas with animation */
+
 .canvas.grabbing {
     cursor: grabbing;
 }
@@ -275,9 +389,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    transition: transform 0.1s ease-out;
-    transform: scale(0.75);
-    transform-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Asset Cards */

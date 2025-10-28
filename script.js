@@ -310,12 +310,61 @@ class ProgressManager {
                         this.nextStep();
                     }, 500); // Small delay between steps
                 } else {
-                    // All steps completed - show completion message
+                    // All steps completed - merge blocks then show completion message
                     setTimeout(() => {
-                        this.showCompletionMessage();
+                        this.mergeBlocks();
+                        setTimeout(() => {
+                            this.showCompletionMessage();
+                        }, 500); // Brief pause to let user see the unified block
                     }, 500);
                 }
             }, this.stepDuration);
+        }
+        
+        mergeBlocks() {
+            // Get all blocks
+            const blocks = this.canvasViewport.querySelectorAll('.block-3d');
+            
+            // Smoothly dissolve all individual blocks
+            blocks.forEach(block => {
+                block.style.transition = 'opacity 0.8s ease-out';
+                block.style.opacity = '0';
+            });
+            
+            // Create unified block with document lines
+            setTimeout(() => {
+                const unifiedBlock = document.createElement('div');
+                unifiedBlock.className = 'unified-block';
+                unifiedBlock.style.left = '50%';
+                unifiedBlock.style.bottom = '0';
+                unifiedBlock.style.transform = 'translateX(-50%) translateY(-150px)';
+                unifiedBlock.style.opacity = '0';
+                unifiedBlock.innerHTML = `
+                    <div class="unified-content">
+                        <div class="doc-lines">
+                            <div class="doc-line"></div>
+                            <div class="doc-line"></div>
+                            <div class="doc-line short"></div>
+                            <div class="doc-line"></div>
+                            <div class="doc-line"></div>
+                            <div class="doc-line short"></div>
+                        </div>
+                        <div class="unified-title">Your brand-powered content</div>
+                    </div>
+                `;
+                this.canvasViewport.appendChild(unifiedBlock);
+                
+                // Fade in unified block
+                setTimeout(() => {
+                    unifiedBlock.style.transition = 'opacity 0.8s ease-in';
+                    unifiedBlock.style.opacity = '1';
+                }, 50);
+                
+                // Remove old blocks after fade
+                setTimeout(() => {
+                    blocks.forEach(block => block.remove());
+                }, 800);
+            }, 600);
         }
         
         showCompletionMessage() {
@@ -531,30 +580,53 @@ class ProgressManager {
     
     showCanvasAnimation(stepNumber, duration) {
         const config = this.stepConfigs[stepNumber - 1];
-        const content = config.canvasContent;
         
-        // Handle multiple assets (for Audiences with stacking animation)
-        if (Array.isArray(content)) {
-            // Audience 1: takes 2000ms (half the duration)
-            // Audience 2: starts after 1500ms, takes 1500ms (faster generation)
-            // Both finish with buffer time before step completes
-            content.forEach((item, idx) => {
-                if (idx === 0) {
-                    // First audience - starts immediately, takes 2000ms
-                    this.createAsset(item, stepNumber - 1, 2000, idx);
-                } else {
-                    // Second audience - starts at 1500ms, takes 300ms to complete faster
-                    setTimeout(() => {
-                        this.createAsset(item, stepNumber - 1, 300, idx);
-                    }, 1500);
-                }
-            });
-        } else if (content.type === 'knowledge-base') {
-            // Knowledge Base with sequential stacking
-            this.createKnowledgeBaseStack(content, stepNumber - 1, duration);
-        } else {
-            this.createAsset(content, stepNumber - 1, duration, 0);
-        }
+        // Create 3D block that drops and stacks
+        this.create3DBlock(stepNumber, duration);
+    }
+
+    create3DBlock(stepNumber, duration) {
+        const config = this.stepConfigs[stepNumber - 1];
+        
+        // Define colors for each block (gradient from light to dark like reference)
+        const blockColors = [
+            { light: '#7DD3FC', mid: '#38BDF8', dark: '#0284C7' }, // Brand Context - light blue
+            { light: '#60A5FA', mid: '#3B82F6', dark: '#1D4ED8' }, // Brand Voice - medium blue
+            { light: '#3B82F6', mid: '#2563EB', dark: '#1E40AF' }, // Audiences - blue
+            { light: '#1E40AF', mid: '#1E3A8A', dark: '#172554' }  // Knowledge Base - dark blue
+        ];
+        
+        const color = blockColors[stepNumber - 1];
+        
+        // Create 3D block element
+        const block = document.createElement('div');
+        block.className = 'block-3d';
+        block.style.setProperty('--block-light', color.light);
+        block.style.setProperty('--block-mid', color.mid);
+        block.style.setProperty('--block-dark', color.dark);
+        
+        // Position based on step number (stack from bottom to top)
+        const stackHeight = (4 - stepNumber) * 80; // Each block is 80px tall, stack from bottom
+        block.style.bottom = stackHeight + 'px';
+        
+        // Add content label
+        block.innerHTML = `
+            <div class="block-front">
+                <span class="block-label">${config.title.replace(' Gathered', '').replace('Creating ', '').replace(' Created', '').replace(' Populated', '')}</span>
+            </div>
+        `;
+        
+        this.canvasViewport.appendChild(block);
+        
+        // Animate block dropping from top
+        setTimeout(() => {
+            block.classList.add('dropping');
+        }, 100);
+        
+        // After drop animation, mark as landed
+        setTimeout(() => {
+            block.classList.add('landed');
+        }, duration - 200);
     }
 
     createAsset(content, index, duration, subIndex = 0) {
