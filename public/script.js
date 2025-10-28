@@ -190,8 +190,11 @@ class ProgressManager {
     }
     
     startProgression() {
-        this.createStep(1);
-        this.nextStep();
+        // Add a buffer delay before showing the first step and starting
+        setTimeout(() => {
+            this.createStep(1);
+            this.nextStep();
+        }, 1500); // 1.5 second delay before agent starts
     }
     
     createStep(stepNumber) {
