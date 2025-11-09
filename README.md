@@ -1,6 +1,6 @@
-# Jasper IQ Setup - Agentic Workspace Configuration
+# Agentic IQ Setup
 
-A modern React application that provides an intelligent first-time setup experience for Jasper admins. This application creates a welcoming onboarding flow that analyzes company information and configures personalized IQs for consistent content generation.
+A React-based setup experience that guides Jasper admins through an intelligent first-time onboarding flow. It analyzes company details to automatically configure personalized Jasper IQs, ensuring brand-aligned and consistent content across the workspace.
 
 ## Features
 
